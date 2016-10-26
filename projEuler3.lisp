@@ -1,0 +1,23 @@
+(defun isPrime-p (p) "is p prime?"
+       (if (= p 1) (return-from isPrime-p t))
+       (loop for a from 2 to (isqrt p)
+	     do (if (= (mod p a) 0)
+		    (return-from isPrime-p nil)
+		  )
+	     )
+       (return-from isPrime-p 'true)
+       )
+
+(defvar largePFact 0)
+(defconstant c 600851475143)
+(if (isPrime-p c)
+    (print c))
+(loop for num from 1 to (isqrt c)
+      if(= (mod c num) 0)
+      do
+      (if (isPrime-p num)
+	  (setq largePFact num)
+	)
+      )
+(print largePFact)
+      
