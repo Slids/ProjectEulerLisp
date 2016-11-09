@@ -25,18 +25,30 @@
 (defconstant numRows (car (array-dimensions myArray)))
 (defconstant numCols (cadr (array-dimensions myArray)))
 (defvar maxCurr 0)
+(defvar currlr 1)
+(defvar currud 1)
+(defvar currd1 1)
+(defvar currd2 1)
 (defvar curr 1)
+
 (defconstant numMult 4)
 
 					;Lets loop through rows first
 (loop for row from 0 to (- numRows 1) do
       (loop for col from 0 to (- numCols numMult) do
-	    (setq curr 1)
+	    (setq currlr 1)
+	    (setq currud 1)
+	    (setq currd1 1)
+	    (setq currd2 1)
 	    (loop for slide from 0 to (- numMult 1) do
-		  (setq curr (* curr (aref myArray row (+ col slide))))
+		  (setq currlr (* currl3 (aref myArray row (+ col slide))))
+		  (setq currud (* currud (aref myArray row (+ col slide))))
+		  (setq currd1 (* currd1 (aref myArray row (+ col slide))))
+		  (setq currd2 (* currd2 (aref myArray row (+ col slide)))))
+	    (setq curr (max currlr currud currd1 currd2))
 		  (if (> curr maxCurr)
 		      (setq maxCurr curr))
-		  )))
+		  ))
 
 (loop for col from 0 to (- numCols 1) do
       (loop for row from 0 to (- numRows numMult) do

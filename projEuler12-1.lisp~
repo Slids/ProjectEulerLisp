@@ -1,0 +1,64 @@
+(defvar numDiv 0)
+(defVar divList nil)
+(defVar primeList nil)
+
+(defun isPrime (p) "is p prime?"
+       (if (= p 1) (return-from isPrime t))
+       (loop for n from 2 to (isqrt p) do
+	     (if (= (mod p n) 0)
+		 (return-from isPrime nil)))
+       (return-from isPrime 't))
+
+(defun getPrimeList (upTo) "Get all the prime numbers up to upTo"
+       (loop for n from 2 to upTo do
+	     (if (isPrime n)
+		 (setq primeList (cons n primeList)))
+	     )
+       (setq primeList (reverse primeList)))
+
+(defun getDivList (num) "Get the list of divisors and counts (and add 1)"
+       (let ((divList nil))
+	 (loop for prime in primeList do
+       	       (cond ((= (mod num prime) 0)
+		      (let ((numTimeDiv 1))
+			(loop
+			 while (= (mod num prime) 0) do
+			 (incf numTimeDiv)
+			 (setq num (/ num prime)))
+;			(print numTimeDiv)
+			(setq divList (cons numTimeDiv divList)))))
+	       (when (= num 1)
+		 (return-from getDivList divList)))))
+
+					;Simple helper functino
+(defun numDivisors (number) "Get the number of divisors of a number"
+       (let ((runProd 1))
+	     (loop for num in (getDivList number) do
+		   (setq runProd (* runProd num)))
+	     (return-from numDivisors runProd)))
+
+(defun main () "Main"
+       (defvar startTime (get-internal-real-time))
+       (defvar triNum 1)
+       (defvar triNumIter 1)
+       (getPrimeList 100)
+       (loop
+					;First increment the iterator
+	(incf triNumIter)
+					;Get the next triangular number
+	(setq triNum (+ triNum triNumIter))
+					;   (print "Num:")
+					;   (print triNum)
+					;   (print "Num Divisors:")
+					;   (print (numDivisors triNum))
+					;   (terpri)
+
+	(defvar endTime (get-internal-real-time))
+	(write-line "Time taken:")
+	(print (float (/ (- endTime startTime) internal-time-units-per-second)))
+	(when (> (numDivisors triNum) 500)
+	  (print triNum)
+	  (return triNum))
+	))
+
+(main)
